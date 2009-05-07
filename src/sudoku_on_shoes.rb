@@ -4,6 +4,7 @@ require 'sudoku_rules'
 require 'sudoku_solver'
 
 N = 15
+$SUDOKU = '9819.sud'
 
 class SudokuOnShoes < Shoes
   include SudokuRules
@@ -13,7 +14,7 @@ class SudokuOnShoes < Shoes
 
   def index
     background tomato
-    $data = IO.read('../puzzles/9819.sud').
+    $data = IO.read('../puzzles/' + $SUDOKU).
       gsub(/[^1-9\.]/, '').gsub('.', ' ').split('')[0, 81]
     
     @cells, @tmp, @cc, n = [], [], nil, 0
@@ -76,8 +77,16 @@ class SudokuOnShoes < Shoes
       line N, i * 90 + N, 270 + N, i * 90 + N, :stroke => maroon, :strokewidth => 2
       line i * 90 + N, N, i * 90 + N, 270 + N, :stroke => maroon, :strokewidth => 2
     end
-    para link(name, :click => "/#{name}"), :left => 15, :top => 300
+    para '#' + $SUDOKU.sub('.sud', ''), :left => 15, :top => 300,
+      :stroke => white, :weight => 'bold'
+    para link(name, :click => "/#{name}"), :left => 100, :top => 300
+    if name == 'solution'
+      para link('select'){
+        fname = ask_open_file
+        $SUDOKU = File.basename(fname) and visit('/')  if fname =~ /\.sud$/
+      }, :left => 180, :top=> 300
+    end
   end
 end
   
-Shoes.app :width => 300, :height => 330, :title => 'Sudoku on Shoes v0.2'
+Shoes.app :width => 300, :height => 330, :title => 'Sudoku on Shoes v0.2a'

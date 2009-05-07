@@ -15,6 +15,7 @@ Snapshot
 
 Change log
 ----------
+May 7th, 2009: Added selecting puzzle file function and 3 more puzzle files (v0.2a)  
 May 3rd, 2009: Added Sudoku Solver   
 May 2nd, 2009: Started this project   
 
@@ -24,7 +25,7 @@ To do list
 Want to add the following functions:   
 
 - sudoku solver.................. done!
-- select a puzzle file
+- select a puzzle file........... done!
 - save player's solution
 - make a puzzle
 
