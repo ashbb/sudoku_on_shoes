@@ -15,7 +15,7 @@ Snapshot
 
 Change log
 ----------
-May 7th, 2009: Added selecting puzzle file function and 3 more puzzle files (v0.2a)  
+May 7th, 2009: Added selecting puzzle file function and three more puzzle files. Updated snapshot pic. (v0.2a)  
 May 3rd, 2009: Added Sudoku Solver   
 May 2nd, 2009: Started this project   
 
