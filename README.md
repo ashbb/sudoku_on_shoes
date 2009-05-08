@@ -12,9 +12,11 @@ Snapshot
 --------
 ![sudoku_on_shoes_snapshot.png](http://github.com/ashbb/sudoku_on_shoes/raw/master/sudoku_on_shoes_snapshot.png)
 
+Left to right: Playing Stage, Solution Stage and Creating Stage.
 
 Change log
 ----------
+May 8th, 2009: Added making puzzle function and refactored overall. Updated snapshot pic. (v0.3)   
 May 7th, 2009: Added selecting puzzle file function and three more puzzle files. Updated snapshot pic. (v0.2a)  
 May 3rd, 2009: Added Sudoku Solver   
 May 2nd, 2009: Started this project   
@@ -27,7 +29,7 @@ Want to add the following functions:
 - sudoku solver.................. done!
 - select a puzzle file........... done!
 - save player's solution
-- make a puzzle
+- make a puzzle.................. done!
 
 
 Have fun!
