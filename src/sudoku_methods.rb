@@ -16,7 +16,7 @@ module Sudoku
   end
   
   def set_stage_link name, x = 60
-    para link(name, :click => "/#{name}"), :left => x, :top => 300
+    para link(name.sub(/\d/, ''), :click => "/#{name}"), :left => x, :top => 300
   end
   
   def set_select_link
@@ -24,6 +24,13 @@ module Sudoku
       fname = ask_open_file
       $SUDOKU = File.basename(fname) and visit('/')  if fname =~ /\.sud$/
     }, :left => 120, :top=> 300
+  end
+  
+  def set_load_link
+    para link('load'){
+      fname = ask_open_file
+      $SUDOKU = File.basename(fname) and visit('/create1')  if fname =~ /\.sud$/
+    }, :left => 180, :top=> 300
   end
   
   def set_keypress
@@ -47,33 +54,34 @@ module Sudoku
     end
   end
   
-  def display data, bcolor = white
+  def display data, bcolor1 = white, bcolor2 = gainsboro, scolor = black
     n = 0
     stack :margin => N do
       9.times do |j|
         9.times do |i|
           x, y = i * 30, j * 30
-          r = rect(x, y, 30, 30, :fill => $data[n] == ' ' ? bcolor : gainsboro)
+          r = rect(x, y, 30, 30, :fill => $data[n] == ' ' ? bcolor1 : bcolor2)
           (yield r) if block_given?
           r.num = tagline(data[n], :left => x + N + 5, :top => y + N, 
-            :stroke => r.color == gainsboro ? black : green)
+            :stroke => r.color == bcolor2 ? scolor : green)
           n += 1
         end
       end
     end
   end
   
-  def set_save_link
+  def set_save_link solved = false
     para link('save'){
       fname = ask_save_file
-      open(fname, 'w'){|f| f.puts save_data} if fname
+      open(fname, 'w'){|f| f.puts save_data(solved)} if fname
     }, :left => 120, :top=> 300
   end
   
-  def save_data
+  def save_data solved
     ret = []
-    @cells.each_with_index do |cell, i|
-      ret << ((t = cell.num.text) == ' ' ? '.' : t)
+    cells = solved ? solved : @cells
+    cells.each_with_index do |cell, i|
+      ret << ((t = solved ? cell : cell.num.text) == ' ' ? '.' : t)
       (ret << "\n")  if i % 9 == 8 
     end
     ret.to_s
