@@ -7,8 +7,8 @@
 require 'logger'
 require 'set'
 
-$LOG = Logger.new('../log/sudoku_generator.log')
-$LOG.level = Logger::INFO
+# $LOG = Logger.new('/tmp/sudoku_generator.log')
+$LOG.level = Logger::DEBUG if $LOG
 
 # A cell respresents a single location on the sudoku board.  Initially
 # it holds no number, but a number can be manually assigned to the
@@ -165,13 +165,13 @@ class Board
     times_solved = nil
     good_number = nil
     cell = nil
-    cleared_cells = Array.new
+    available_cells = @cells.dup
     begin
-      available_cells = @cells - cleared_cells
       srand
       begin
         cell = available_cells[rand(available_cells.size)]
       end until cell.number
+      available_cells.delete(cell)
       $LOG.debug("\tchose cell #{cell.name}, number #{cell.number}")
       good_number = cell.number
       cell.number = 0
@@ -184,9 +184,12 @@ class Board
           times_solved += 1
         end
       end
-      cell.number = 0
-    end until times_solved > 1
-    cell.number = good_number
+      if(times_solved > 1)
+        cell.number = good_number
+      else
+        cell.number = 0
+      end
+    end until available_cells.empty?
   end
 
   # Iterate over the cells of the puzzle.  Iteration starts in the
