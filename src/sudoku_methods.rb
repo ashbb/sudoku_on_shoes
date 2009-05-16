@@ -33,6 +33,10 @@ module Sudoku
     }, :left => 180, :top=> 300
   end
   
+  def set_auto_link
+    para link('auto'){visit '/create2'}, :left => 240, :top=> 300
+  end
+  
   def set_keypress
     keypress do |key|
       if @cc.color == khaki and (('1'..'9').to_a << ' ').include? key
@@ -70,10 +74,13 @@ module Sudoku
     end
   end
   
-  def set_save_link solved = false
+  def set_save_link solved = false, flag = true
     para link('save'){
       fname = ask_save_file
-      open(fname, 'w'){|f| f.puts save_data(solved)} if fname
+      if fname =~ /\.sud$/
+        $SUDOKU = File.basename(fname) if flag
+        open(fname, 'w'){|f| f.puts save_data(solved)}
+      end
     }, :left => 120, :top=> 300
   end
   
