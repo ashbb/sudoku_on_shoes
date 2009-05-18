@@ -11,7 +11,7 @@ class SudokuGen
   eval IO.read('sudoku_generator.rb')
 end
 
-$SUDOKU = '9819.sud'
+$SUDOKU = '../puzzles/9819.sud'
 
 class SudokuOnShoes < Shoes
   include Sudoku
@@ -23,7 +23,7 @@ class SudokuOnShoes < Shoes
 
   def index
     background tomato
-    $data = IO.read('../puzzles/' + $SUDOKU).
+    $data = IO.read($SUDOKU).
       gsub(/[^1-9\.]/, '').gsub('.', ' ').split('')[0, 81]
     @cells = []
     
@@ -47,7 +47,7 @@ class SudokuOnShoes < Shoes
       when '0'
         Array.new(81, ' ')
       when '1'
-        IO.read('../puzzles/' + $SUDOKU).
+        IO.read($SUDOKU).
           gsub(/[^1-9\.]/, '').gsub('.', ' ').split('')[0, 81]
       when '2'
         SudokuGen::SudokuGenerator.new.generate.
@@ -91,4 +91,4 @@ class SudokuOnShoes < Shoes
   
 end
   
-Shoes.app :width => 300, :height => 330, :title => 'Sudoku on Shoes v0.5'
+Shoes.app :width => 300, :height => 330, :title => 'Sudoku on Shoes v0.5a'

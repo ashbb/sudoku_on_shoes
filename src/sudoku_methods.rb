@@ -11,7 +11,7 @@ module Sudoku
   end
   
   def set_sudoku_no
-    para '#' + $SUDOKU.sub('.sud', ''), :left => 5, :top => 300, 
+    para '#' + File.basename($SUDOKU).sub('.sud', ''), :left => 5, :top => 300, 
       :stroke => white, :weight => 'bold'
   end
   
@@ -22,14 +22,14 @@ module Sudoku
   def set_select_link
     para link('select'){
       fname = ask_open_file
-      $SUDOKU = File.basename(fname) and visit('/')  if fname =~ /\.sud$/
+      $SUDOKU = fname and visit('/')  if fname =~ /\.sud$/
     }, :left => 120, :top=> 300
   end
   
   def set_load_link
     para link('load'){
       fname = ask_open_file
-      $SUDOKU = File.basename(fname) and visit('/create1')  if fname =~ /\.sud$/
+      $SUDOKU = fname and visit('/create1')  if fname =~ /\.sud$/
     }, :left => 180, :top=> 300
   end
   
@@ -78,7 +78,7 @@ module Sudoku
     para link('save'){
       fname = ask_save_file
       if fname =~ /\.sud$/
-        $SUDOKU = File.basename(fname) if flag
+        $SUDOKU = fname if flag
         open(fname, 'w'){|f| f.puts save_data(solved)}
       end
     }, :left => 120, :top=> 300
