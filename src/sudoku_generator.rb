@@ -7,7 +7,7 @@
 require 'logger'
 require 'set'
 
-# $LOG = Logger.new('/tmp/sudoku_generator.log')
+# $LOG = Logger.new('/tmp/sudoku_generator.log') 
 $LOG.level = Logger::DEBUG if $LOG
 
 # A cell respresents a single location on the sudoku board.  Initially
@@ -41,7 +41,8 @@ class Cell
 
   # Assign a random number to the cell
   def set_random(exclude) 
-    $LOG.debug("available numbers for #{@name}: #{available_numbers.to_a.join(', ')}")
+    $LOG.debug("available numbers for #{@name}: #{available_numbers.to_a.join(', ')}") if $LOG
+
     begin 
       @number = nil if @number
       an = available_numbers - exclude
@@ -52,7 +53,8 @@ class Cell
         return nil
       end
     end until @number
-    $LOG.debug("\t\tpicked: #{@number}")
+    $LOG.debug("\t\tpicked: #{@number}") if $LOG
+
     return @number
   end
   # Return a set of numbers that could be assigned to the cell without
@@ -138,8 +140,10 @@ class Board
       n = 0
       create_empty
       passes += 1
-      $LOG.debug("pass #{passes}")
-      $LOG.debug '=================='
+      $LOG.debug("pass #{passes}") if $LOG
+
+      $LOG.debug '==================' if $LOG
+
       each do |cell|
         if(n)
           i = 0
@@ -149,11 +153,13 @@ class Board
             i += 1
             n = cell.set_random(tested)
             tested << n if n
-            $LOG.debug("\t\tcell #{cell.name}, trying #{cell.number || 'nothing'}. Stuck? #{stuck?}, attempt #{i}")
+            $LOG.debug("\t\tcell #{cell.name}, trying #{cell.number || 'nothing'}. Stuck? #{stuck?}, attempt #{i}") if $LOG
+
           end while stuck? && i < 9 && n 
         end
       end
-      $LOG.debug("end of pass #{passes}, success? #{n != nil}")
+      $LOG.debug("end of pass #{passes}, success? #{n != nil}") if $LOG
+
     end until n || passes >= 100
   end
 
@@ -161,7 +167,8 @@ class Board
   # but not so many, that the Sudoku has more than
   # one solution!
   def clear_nonambiguous()
-    $LOG.debug("clearing some cells...")
+    $LOG.debug("clearing some cells...") if $LOG
+
     times_solved = nil
     good_number = nil
     cell = nil
@@ -172,11 +179,13 @@ class Board
         cell = available_cells[rand(available_cells.size)]
       end until cell.number
       available_cells.delete(cell)
-      $LOG.debug("\tchose cell #{cell.name}, number #{cell.number}")
+      $LOG.debug("\tchose cell #{cell.name}, number #{cell.number}") if $LOG
+
       good_number = cell.number
       cell.number = 0
       an = cell.available_numbers
-      $LOG.debug("\tCell #{cell.name}, available numbers now: #{an.to_a.join(', ')}")
+      $LOG.debug("\tCell #{cell.name}, available numbers now: #{an.to_a.join(', ')}") if $LOG
+
       times_solved = 0
       an.each do |test_n|
         cell.number = test_n 
@@ -190,6 +199,7 @@ class Board
         cell.number = 0
       end
     end until available_cells.empty?
+    return @cells.count {|c| c.number}
   end
 
   # Iterate over the cells of the puzzle.  Iteration starts in the
@@ -394,18 +404,28 @@ end
 
 
 class SudokuGenerator
+  @@difficulty = {:easy => 41, :medium => 36, :hard => 33}
+
+  def initialize(level = :easy)
+    @level = level.to_sym
+  end
+
   def new_board()
-    b = Board.new(true)
+    Board.new(true)
   end
 
   def generate()
-    board = new_board()
-    board.fill
-    $LOG.debug('--------- sudoku completed ------------')
-    $LOG.debug("\n#{board.to_s}")
-    board.clear_nonambiguous 
-    $LOG.debug('--------- new sudoku puzzle ------------')
-    $LOG.debug("\n#{board.to_s}")
+    begin
+      board = new_board()
+      board.fill
+      $LOG.debug('--------- sudoku completed ------------') if $LOG
+
+      $LOG.debug("\n#{board.to_s}") if $LOG
+
+      num = board.clear_nonambiguous 
+      $LOG.debug('--------- new sudoku puzzle ------------') if $LOG
+      $LOG.debug("\n#{board.to_s}\n#{num} given numbers.") if $LOG
+    end until num < @@difficulty[@level]
     return board.to_s
   end
 
@@ -426,5 +446,5 @@ class SudokuGenerator
 end
 
 if __FILE__ == $0 then
-  SudokuGenerator.new.run(ARGV)
+  SudokuGenerator.new('medium').run(ARGV)
 end
