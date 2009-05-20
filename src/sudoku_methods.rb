@@ -33,6 +33,13 @@ module Sudoku
     }, :left => 180, :top=> 300
   end
   
+  def set_list_box
+    list_box :items => %w[easy medium hard], :left => 240, :top=> 286,
+      :width => 55, :height => 30, :choose => 'easy' do |selected|
+        $level = selected.text
+    end
+  end
+  
   def set_auto_link
     para link('auto'){visit '/create2'}, :left => 240, :top=> 300
   end

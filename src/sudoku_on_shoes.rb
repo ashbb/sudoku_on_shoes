@@ -50,7 +50,7 @@ class SudokuOnShoes < Shoes
         IO.read($SUDOKU).
           gsub(/[^1-9\.]/, '').gsub('.', ' ').split('')[0, 81]
       when '2'
-        SudokuGen::SudokuGenerator.new.generate.
+        SudokuGen::SudokuGenerator.new($level ||= :easy).generate.
           gsub(/[^1-9\.]/, '').gsub('.', ' ').split('')[0, 81]
       else
     end
@@ -65,6 +65,7 @@ class SudokuOnShoes < Shoes
     set_stage_link 'play'
     set_save_link
     set_load_link
+    set_list_box
     set_auto_link
     
     set_keypress
@@ -91,4 +92,4 @@ class SudokuOnShoes < Shoes
   
 end
   
-Shoes.app :width => 300, :height => 330, :title => 'Sudoku on Shoes v0.5a'
+Shoes.app :width => 300, :height => 330, :title => 'Sudoku on Shoes v0.6'
