@@ -10,18 +10,15 @@ require 'set'
 # $LOG = Logger.new('/tmp/sudoku_generator.log') 
 $LOG.level = Logger::DEBUG if $LOG
 
-# commented out line 14-22 and replaced line 214 to 215 for Shoes 2 by ashbb
-=begin
+
 # for Ruby 1.8.6-compatibility
 if(! Array.method_defined?(:count) )
-	class Array
+	class ::Array
 		def count()
 			map{|element| yield(element) || nil }.compact.length
 		end
 	end
 end
-=end
-
 # A cell respresents a single location on the sudoku board.  Initially
 # it holds no number, but a number can be manually assigned to the
 # cell (which is then remembered for later).
@@ -211,8 +208,7 @@ class Board
 				cell.number = 0
 			end
 		end until available_cells.empty?
-		#return @cells.count {|c| c.number}
-    return @cells.map{|c| c.number || nil }.compact.length  # for Shoes 2 by ashbb
+		return @cells.count {|c| c.number}
 	end
 
 	# Iterate over the cells of the puzzle.  Iteration starts in the
