@@ -16,6 +16,7 @@ Left to right: Playing Stage, Solution Stage and Creating Stage.
 
 Change log
 ----------
+May 16th, 2010: Edited path name for Policeman.     
 May 20th, 2009: Merged Michael's pull request. Sudoku Generator accepts an optional difficulty-level, :easy, :medium, :hard. (v0.6)   
 May 18th, 2009: Fixed a bug Michael found. Thx! Now can load sudoku puzzle file from anywhere. (v0.5a)   
 May 16th, 2009: Merged Sudoku Generator created by Michael Uplawski. (v0.5)   

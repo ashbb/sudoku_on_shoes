@@ -92,4 +92,4 @@ class SudokuOnShoes < Shoes
   
 end
   
-Shoes.app :width => 300, :height => 330, :title => 'Sudoku on Shoes v0.6'
+Shoes.app :width => 300, :height => 330, :title => 'Sudoku on Shoes v0.6a'

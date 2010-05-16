@@ -1,5 +1,7 @@
 # sudoku_shape.rb
-class Shoes::Shape
+SHOES = Shoes::RELEASE_NAME == 'Policeman' ? Shoes::Types : Shoes
+
+class SHOES::Shape
   def color
     style[:fill]
   end
@@ -17,7 +19,7 @@ class Shoes::Shape
   end
 end
 
-class Shoes::Tagline
+class SHOES::Tagline
   def color
     style[:stroke]
   end
